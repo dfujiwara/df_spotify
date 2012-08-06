@@ -9,5 +9,6 @@
     },
     "SupportedLanguages": [
         "en"
-    ]
+    ],
+    "RequiredPermissions": ["http://ajax.googleapis.com"]
 }

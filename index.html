@@ -5,8 +5,16 @@
     <title>My First App</title>
     <link rel="stylesheet" href="sp://import/css/adam.css">
     <link rel="stylesheet" href="tutorial.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          var sp = getSpotifyApi(1);
+          var tutorial = sp.require('tutorial');
+          tutorial.init();
+        });
+    </script>
 </head>
 <body>
-<h1 id="header">Hello, world!</h1>
+<h1 id="header">Hello, world! I am daisuke</h1>
 </body>
 </html>
