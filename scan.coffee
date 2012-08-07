@@ -3,7 +3,6 @@ models = sp.require('sp://import/scripts/api/models')
 player = models.player
 
 init = ->
-  console.log("my spotify app")
   player.observe(models.EVENT.CHANGE, (e) ->
     if e.data.curtrack == true
       wrapper()
@@ -16,7 +15,7 @@ updatePageWithTrackDetails = () ->
   header = $("#header")
   playerTrackInfo = player.track
   if not playerTrackInfo
-    header.html( "Nothing is playing!")
+    header.html("Nothing is playing!")
   else
     track = playerTrackInfo.data
     header.html("#{track.name} on the album #{track.album.artist.name}.")
@@ -40,6 +39,7 @@ startAtRandomPosition = ->
   setTimeout(() ->
     player.next()
   , 30000)
+  return
 
 wrapper = ->
   # set the volume to be zero in the beginning
@@ -55,5 +55,6 @@ wrapper = ->
     else
       console.log("not ready")
   , 200)
+  return
 
 exports.init = init
