@@ -1,6 +1,7 @@
 sp = getSpotifyApi(1)
 models = sp.require('sp://import/scripts/api/models')
 player = models.player
+scanMode = true
 
 init = ->
   player.observe(models.EVENT.CHANGE, (e) ->
@@ -8,17 +9,34 @@ init = ->
       wrapper()
     return
   )
+  $("#scan").click(->
+    scanMode = !scanMode
+  )
   wrapper()
   return
 
 updatePageWithTrackDetails = () ->
   header = $("#header")
+  canvas = $("#canvas")
+
   playerTrackInfo = player.track
   if not playerTrackInfo
-    header.html("Nothing is playing!")
+    headerContent = "Nothing is playing!"
+    cover = null
   else
     track = playerTrackInfo.data
-    header.html("#{track.name} on the album #{track.album.artist.name}.")
+    album = track.album
+    if track.image?
+      cover = track.image
+    else if album.cover?
+      cover = album.cover
+    else
+      cover = null
+    headerContent = "#{track.name} on the album #{track.album.artist.name}."
+  
+  header.html(headerContent)
+  if cover
+    canvas.attr("src", cover)
   return
 
 startAtRandomPosition = ->
@@ -33,12 +51,8 @@ startAtRandomPosition = ->
     player.volume = 0.2 + player.volume
     if player.volume >= 1.0
       clearInterval(volumeInterval)
+      return
   , 500)
-
-  # play the track for 30 seconds and move to the next song
-  setTimeout(() ->
-    player.next()
-  , 30000)
   return
 
 wrapper = ->
@@ -56,5 +70,12 @@ wrapper = ->
       console.log("not ready")
   , 200)
   return
+
+# keeps rotating through tracks
+setInterval(() ->
+  if scanMode
+    player.next()
+  return
+, 30000)
 
 exports.init = init
